@@ -90,6 +90,7 @@ def get_expected_request_count(config, key_minimum=0, key_maximum=1000000):
                 result = mt['threads'] * mt['clients'] * mt['requests']
             else:
                 result = key_maximum - key_minimum + 1
+    print("result {}".format(result))
     return result
 
 
@@ -143,8 +144,11 @@ def ensure_clean_benchmark_folder(dirname):
 def assert_keyspace_range(env, key_max, key_min, master_nodes_connections):
     expected_keyspace_range = key_max - key_min + 1
     overall_keyspace_range = agg_keyspace_range(master_nodes_connections)
+    print(expected_keyspace_range, overall_keyspace_range)
     # assert we have the expected keyspace range
     logging.debug(f"Checking if expected keyspace value {expected_keyspace_range} matches the actual value {overall_keyspace_range}")
+    print("expected_keyspace_range{0} overall_keyspace_range{1}".format(expected_keyspace_range, overall_keyspace_range))
+
     env.assertEqual(expected_keyspace_range, overall_keyspace_range)
 
 
@@ -152,11 +156,13 @@ def agg_keyspace_range(master_nodes_connections):
     overall_keyspace_range = 0
     for master_connection in master_nodes_connections:
         shard_reply = master_connection.execute_command("INFO", "KEYSPACE")
+        print(shard_reply)
         shard_count = 0
         if 'db0' in shard_reply:
             if 'keys' in shard_reply['db0']:
                 shard_count = int(shard_reply['db0']['keys'])
         overall_keyspace_range = overall_keyspace_range + shard_count
+    print("overall_keyspace_range{0} shard_count{1}".format(overall_keyspace_range, shard_count))
     return overall_keyspace_range
 
 
