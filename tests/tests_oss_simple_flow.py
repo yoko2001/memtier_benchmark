@@ -6,7 +6,7 @@ from mbdirector.runner import RunConfig
 
 
 def test_preload_and_set_get(env):
-    key_max = 10000000
+    key_max = 2000000
     key_min = 1
     benchmark_specs = {"name": env.testName, 
                        "args": ['--pipeline=10',

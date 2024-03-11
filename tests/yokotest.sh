@@ -73,7 +73,7 @@ EXIST_REDIS_ADDR_PORT=localhost:6379
 
 RLTEST_ARGS=" --oss-redis-path $REDIS_SERVER"
 [[ "$TEST" != "" ]] && RLTEST_ARGS+=" --test $TEST"
-[[ $VERBOSE == 1 ]] && RLTEST_ARGS+=" -v"
+[[ $VERBOSE == 1 ]] && RLTEST_ARGS+=" -vv"
 [[ $TLS == 1 ]] && RLTEST_ARGS+=" --tls-cert-file $TLS_CERT --tls-key-file $TLS_KEY --tls-ca-cert-file $TLS_CACERT --tls"
 RLTEST_ARGS+=" --existing-env-addr $EXIST_REDIS_ADDR_PORT --env-reuse"
 cd $ROOT/tests

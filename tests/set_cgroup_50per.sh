@@ -24,11 +24,19 @@ else
 	echo "cgroup yuri/${CGROUPNAME} already exists"
 fi
 
-
-let totalmem=$((134217728 * 10)) #approx 128MB*9.2, we give it a little bit more 
+if [ -z "$1" ]; then
+  echo "lack a total workload size"
+  exit -1
+fi
+if [ -z "$2" ]; then
+  echo "lack a total workload size"
+  exit -1
+fi
+let totalmem=$(($1 * 1024 * 1024)) #232mb
 #$((1073741824 * 8)) #8G # $((134217728*4)) #256mb = (4*128mb)*50%
-
-echo ${totalmem} > /sys/fs/cgroup/yuri/${CGROUPNAME}/memory.max
+restrictsize=$(echo "$2 * $totalmem" | bc)
+restrictsize=$(printf "%.0f" "$restrictsize")
+echo ${restrictsize} > /sys/fs/cgroup/yuri/${CGROUPNAME}/memory.max
 echo "set memory.max to"
 cat /sys/fs/cgroup/yuri/${CGROUPNAME}/memory.max
 exit 0
